@@ -22,8 +22,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the collision is with the player
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag ("Player"))
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);
