@@ -6,6 +6,7 @@ public class EnemyBullet : MonoBehaviour
 {
     public float speed = 10f;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +20,10 @@ public class EnemyBullet : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        // Check if the collision is with the player
+        if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);

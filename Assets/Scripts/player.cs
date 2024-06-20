@@ -174,4 +174,6 @@ public class player : MonoBehaviour
         look.y = rotation.eulerAngles.z;
         velocity = Vector3.zero;
     }
+
+    
 }
