@@ -6,6 +6,14 @@ public class Teleport : MonoBehaviour
 {
     [SerializeField] Transform destination;
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && other.TryGetComponent<player>(out var player))
+        {
+            player.Teleport(destination.position, destination.rotation);
+        }
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.white;

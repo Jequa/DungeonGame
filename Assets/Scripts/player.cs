@@ -165,4 +165,13 @@ public class player : MonoBehaviour
         slideDistance = 6f; // Reset slide distance for next slide
         transform.localScale = new Vector3(1, 1, 1);
     }
+
+    public void Teleport(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        Physics.SyncTransforms();
+        look.x = rotation.eulerAngles.y;
+        look.y = rotation.eulerAngles.z;
+        velocity = Vector3.zero;
+    }
 }
