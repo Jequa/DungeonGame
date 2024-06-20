@@ -9,10 +9,13 @@ public class Gun : MonoBehaviour
     public float bulletSpeed = 10;
     private Vector3 originalScale;
 
+    public AudioClip soundClip; // Reference to the audio clip you want to play
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = soundClip;
     }
 
     // Update is called once per frame
@@ -28,6 +31,7 @@ public class Gun : MonoBehaviour
         {
             var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
+            audioSource.Play();
         }
     }
 
