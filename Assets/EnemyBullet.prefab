@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6325571612870110333}
   m_Layer: 0
   m_Name: EnemyBullet
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &6325571612870110333
 MonoBehaviour:
@@ -127,3 +127,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd8dd51b5e63184e93de6f4b2bd2240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  newPosition: {x: 22.5, y: -90.5, z: 0}
