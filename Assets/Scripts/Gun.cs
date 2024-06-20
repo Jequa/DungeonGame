@@ -21,8 +21,6 @@ public class Gun : MonoBehaviour
         FireGun();
         UpdateGunSize();
     }
-
-    //change gun scale so it stays the same size when crouched
     
     void FireGun()
     {
@@ -33,6 +31,7 @@ public class Gun : MonoBehaviour
         }
     }
 
+    //change gun scale so it stays the same size when crouched
     void UpdateGunSize()
     {
         if (Input.GetKeyDown(KeyCode.C))

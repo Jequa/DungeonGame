@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    //Movement
     [SerializeField] float mouseSensitivity = 3f;
     [SerializeField] float movementSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
@@ -11,24 +12,29 @@ public class player : MonoBehaviour
     [SerializeField] Transform cameraTransform;
     private Vector3 originalScale;
 
-    public float slideSpeed = 5f; // Speed where the player slides
-    private Rigidbody rb;
+    //Sliding
+    public float slideDistance = 6f; // Distance to slide
+    public float slideSpeed = 5f;    // Initial speed of sliding
+    public float slideDeceleration = 2f; // Deceleration factor
 
+    private bool isSliding = false;
+    private Vector3 slideDirection;
+    private float currentSlideSpeed;
+
+    //References
+    private Rigidbody rb;
     CharacterController controller;
     Vector3 velocity;
     Vector2 look;
 
     // Start is called before the first frame update
-    void Awake()
-    {
-        controller = GetComponent<CharacterController>();
-    }
-    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         originalScale = transform.localScale;
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -39,6 +45,7 @@ public class player : MonoBehaviour
         UpdateLook();
         UpdateCrouch();
         UpdateSprint();
+        UpdateSlide();
     }
 
     void UpdateGravity()
@@ -97,24 +104,65 @@ public class player : MonoBehaviour
 
     void UpdateSprint()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             movementSpeed = 8f;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.W))
         {
             movementSpeed = 5f;
+        }
+        if (Input.GetKey(KeyCode.C))
+        {
+            movementSpeed = 2.5f;
         }
     }
 
     void UpdateSlide()
     {
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftControl))
+        // Check if Left Control key is pressed down
+        if (Input.GetKeyDown(KeyCode.LeftControl) && movementSpeed >=7f)
         {
-            Vector3 slideVelocity = transform.forward * slideSpeed; // Calculate sliding velocity in the forward direction
-
-            // Apply the sliding velocity to the Rigidbody's velocity
-            rb.velocity = slideVelocity;
+            StartSlide();
         }
+
+        // Check if Left Control key is released
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            StopSlide();
+        }
+
+        // Update slide movement if sliding
+        if (isSliding)
+        {
+            float slideStep = currentSlideSpeed * Time.deltaTime;
+            transform.Translate(slideDirection * slideStep, Space.World);
+            slideDistance -= slideStep;
+
+            // Reduce slide speed over time
+            currentSlideSpeed -= slideDeceleration * Time.deltaTime;
+
+            // Stop sliding when slide distance is zero or speed is very low
+            if (slideDistance <= 0f || currentSlideSpeed <= -15f)
+            {
+                StopSlide();
+            }
+        }
+    }
+    void StartSlide()
+    {
+        if (!isSliding)
+        {
+            isSliding = true;
+            currentSlideSpeed = slideSpeed;
+            slideDirection = transform.forward; // Slide in the forward direction of the object
+            transform.localScale = new Vector3(1, 0.5f, 1);
+        }
+    }
+    void StopSlide()
+    {
+        isSliding = false;
+        slideDistance = 6f; // Reset slide distance for next slide
+        transform.localScale = new Vector3(1, 1, 1);
     }
 }
